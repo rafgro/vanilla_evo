@@ -1,4 +1,5 @@
-import genome
+from population import Population
 
-print('hello')
-print(genome.to_be_tested(10, 20))
+print('Hello')
+population = Population(found=True)
+print(population)
