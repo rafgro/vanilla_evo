@@ -7,6 +7,9 @@ from genome import Genome
 class Individual:
     """
     Class for keeping genomes and metadata in one place
+
+    Biological fitness, mathematically:
+        number of offspring carrying haploid genome from this individual
     """
     genome: Genome         # diploid genome sequences
     fitness: float = 1.5   # directly-understood fitness
@@ -38,13 +41,16 @@ class Population:
     def __str__(self):
         return f'Population of {len(self.individuals)}'
 
-    def found(self, n=50, genome_size=10):
+    def found(self, n=50, genome_size=10, ambient_fitness=1.5):
         """ Generate n individuals and create population
         """
         for _ in range(n):
             a_new_genome = Genome()
             a_new_genome.expand(genome_size)  # genome initilization
-            self.individuals.append(Individual(genome=a_new_genome))
+            self.individuals.append(Individual(
+                genome=a_new_genome,
+                fitness=ambient_fitness,
+            ))
 
     def next_generation(self):
         """ Swap current population with new individuals
@@ -65,10 +71,21 @@ class Population:
             if o_individual.paired_with == -1:
                 continue  # skip lone individuals
             # probability of offspring dictated by fitness
-            if o_individual.fitness >= 1:
+            # algorithm: 100% for every full 1, probability
+            #   0.1=10% for all other
+            offspring_to_make = o_individual.fitness
+            while offspring_to_make > 0.01:
+                if offspring_to_make < 1:
+                    if randint(0, 100) > offspring_to_make*100:
+                        break  # under 1 -> no more offspring
+                offspring_to_make -= 1
                 new_individuals.append(Individual(
                     genome=Genome(
-                        o_individual.haploid(),
-                        self.individuals[o_individual.paired_with].haploid(),
+                        o_individual.genome.haploid(),
+                        self.individuals[o_individual.paired_with]
+                            .genome.haploid(),
                     ),
                 ))
+        # finish line
+        print(len(new_individuals))
+        self.individuals = new_individuals
