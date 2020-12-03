@@ -36,6 +36,7 @@ class Genome:
 
     def mutate(self, n=1):
         """Change n times randomly single bits in both sequences
+        Disclaimer: generally should not be used
         """
         for _ in range(n):
             locus = randint(0, len(self.sequence_A)-1)

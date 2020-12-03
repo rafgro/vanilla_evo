@@ -9,6 +9,6 @@ def test_population_founding():
 
 def test_population_nextgen():
     an_instance = population.Population()
-    an_instance.found(n=10, ambient_fitness=2.1)
+    an_instance.found(n=10, ambient_fitness=3.1)
     an_instance.next_generation()
     assert len(an_instance.individuals) >= 10
