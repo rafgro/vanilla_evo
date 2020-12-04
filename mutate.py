@@ -12,10 +12,6 @@ def mutate(agenome, frequency_table):
         Should have frequencies in percentage of
             singles - single substitutions
             expansions - expansion at any side of the genome
-
-    Returns
-    -------
-    sequence: bitarray
     """
     # correcting frequency table
     for k, v in frequency_table.items():
@@ -31,10 +27,15 @@ def mutate(agenome, frequency_table):
             no_of_expansions += 1
     # single substitutions
     for _ in range(no_of_substitutions):
-        locus = randint(0, len(agenome.sequence_A)-1)
-        agenome.sequence_A.invert(locus)
-        if locus < len(agenome.sequence_A):  # diploid can have different A-B
+        locus = randint(0, agenome.min_length())
+        if randint(0, 1) == 0:  # diploid substitution
+            agenome.sequence_A.invert(locus)
             agenome.sequence_B.invert(locus)
+        else:  # haploid substituion
+            if randint(0, 1) == 0:
+                agenome.sequence_A.invert(locus)
+            else:
+                agenome.sequence_B.invert(locus)
     # expansions
     for _ in range(no_of_expansions):
         end = randint(0, 1)

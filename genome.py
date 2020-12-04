@@ -27,6 +27,15 @@ class Genome:
         self.sequence_A = bitarray(seqA)
         self.sequence_B = bitarray(seqB)
 
+    def __str__(self):
+        return '[' + self.sequence_A.to01() + ',' \
+            + self.sequence_B.to01() + ']'
+
+    def min_length(self):
+        """Return shortest length of sequuence
+        """
+        return min(len(self.sequence_A)-1, len(self.sequence_B)-1)
+
     def haploid(self):
         """Return one of the sequences for offspring
         """

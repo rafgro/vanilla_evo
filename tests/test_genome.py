@@ -7,7 +7,7 @@ def test_genome_expansion_and_mutation():
     an_instance.expand(n=10)  # expansion test
     a_sequence_bit = an_instance.sequence_A.copy()
     an_instance.mutate(4)  # mutation test
-    assert an_instance.sequence_A != a_sequence_bit
+    assert an_instance.sequence_A != bitarray(a_sequence_bit)
 
 
 def test_genome_haploidy():

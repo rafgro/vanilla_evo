@@ -2,6 +2,7 @@ from dataclasses import dataclass
 from random import randint
 from genome import Genome
 from mutate import mutate
+from crossover import crossover
 
 
 @dataclass
@@ -65,10 +66,15 @@ class Population:
             if self.individuals[m_try].paired_with == -1:
                 m_individual.paired_with = m_try
                 self.individuals[m_try].paired_with = i
-        # mutations and crossing-overs
+        # mutations
         for i, _ in enumerate(self.individuals):
             mutate(self.individuals[i].genome,
                    {'singles': 20, 'expansions': 5})
+        # crossing overs
+        for i, _ in enumerate(self.individuals):
+            if self.individuals[i].paired_with == -1:
+                continue
+            crossover(self.individuals[i].genome, events=1)
         # offspring
         new_individuals = []
         for i, o_individual in enumerate(self.individuals):
