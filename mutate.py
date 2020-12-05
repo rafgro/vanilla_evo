@@ -38,12 +38,8 @@ def mutate(agenome, frequency_table):
                 agenome.sequence_B.invert(locus)
     # expansions
     for _ in range(no_of_expansions):
-        end = randint(0, 1)
         expansion = randint(0, 1)
-        if end == 0:
-            agenome.sequence_A.append(expansion)
-            agenome.sequence_B.append(expansion)
-        else:
-            agenome.sequence_A.insert(0, expansion)
-            agenome.sequence_B.insert(0, expansion)
+        agenome.sequence_A.append(expansion)
+        agenome.sequence_B.append(expansion)
+        # for other end: agenome.sequence_A.insert(0, expansion)
     # finish
