@@ -3,6 +3,7 @@ from random import randint
 from genome import Genome
 from mutate import mutate
 from crossover import crossover
+from stats import describe_statistics
 
 
 @dataclass
@@ -41,7 +42,7 @@ class Population:
             self.found()
 
     def __str__(self):
-        return f'Population of {len(self.individuals)}'
+        return str(describe_statistics(self))
 
     def found(self, n=50, genome_size=10, ambient_fitness=1.5):
         """ Generate n individuals and create population
@@ -97,5 +98,4 @@ class Population:
                     ),
                 ))
         # finish line
-        print(len(new_individuals))
         self.individuals = new_individuals
