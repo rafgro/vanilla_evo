@@ -62,7 +62,7 @@ def describe_statistics(population):
             inbreeding_coeff.append(0)  # avoiding division by zero
             continue
         inbreeding_coeff.append(
-            (e['hetero'] / heterozygote_freq[i]) / e['hetero']
+            (e['hetero'] - heterozygote_freq[i]) / e['hetero']
         )
     # finish
     return {
