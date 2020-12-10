@@ -1,3 +1,11 @@
+"""
+Genome Module
+
+Main Purpose
+------------
+Govern technical details of genome implementation
+"""
+
 from bitarray import bitarray
 from random import randint
 

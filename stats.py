@@ -1,3 +1,13 @@
+"""
+Statistics Module
+
+Main Purpose
+------------
+Characterize genomes and population, in order to allow
+precise governance of the process, as well as saving objective
+results of experiments
+"""
+
 from bitarray import bitarray
 from statistics import mean
 

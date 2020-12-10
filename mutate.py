@@ -1,3 +1,11 @@
+"""
+Mutation Module
+
+Main Purpose
+------------
+Introduce primary source of variability within genomes
+"""
+
 from random import randint
 
 

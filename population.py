@@ -1,3 +1,12 @@
+"""
+Population Module
+
+Main Purpose
+------------
+Govern most of the evolutionary process, since it occurs
+on population level - from founding up to turnover
+"""
+
 from dataclasses import dataclass
 from random import randint
 from genome import Genome

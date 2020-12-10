@@ -1,3 +1,11 @@
+"""
+Recombination Module
+
+Main Purpose
+------------
+Increase variability of genomes via crossing-over events
+"""
+
 from random import randint
 
 
