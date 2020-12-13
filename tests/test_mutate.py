@@ -14,5 +14,9 @@ def test_mutate_expansions():
     an_instance = genome.Genome()
     an_instance.expand(n=10)
     a_sequence_bit = an_instance.sequence_A.copy()
-    mutate.mutate(an_instance, {'singles': 0, 'expansions': 50})
+    mutate.mutate(an_instance, {
+        'singles': 0.0,
+        'expansions': 50.0,
+        'deletions': 0.0}
+    )
     assert len(an_instance.sequence_A) > len(a_sequence_bit)

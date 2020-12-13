@@ -79,7 +79,7 @@ class Population:
         # mutations
         for i, _ in enumerate(self.individuals):
             mutate(self.individuals[i].genome,
-                   {'singles': 20, 'expansions': 5})
+                   {'singles': 20.0, 'expansions': 5.0, 'deletions': 2.5})
         # crossing overs
         for i, _ in enumerate(self.individuals):
             if self.individuals[i].paired_with == -1:

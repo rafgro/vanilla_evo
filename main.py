@@ -7,13 +7,13 @@ print('F1')
 population = Population(found=True)
 assess_population(population)
 print(population)
-# Second generation
-print('F2')
-population.next_generation()
-assess_population(population)
-print(population)
-# Third generation
-print('F3')
-population.next_generation()
-assess_population(population)
-print(population)
+# Evolution loop
+for i in range(2, 13):
+    # actual computation
+    population.next_generation()
+    assess_population(population)
+    # report stats every 4 generations
+    if i % 4 == 0:
+        print(' ')
+        print(f'F{i}')
+        print(population)
