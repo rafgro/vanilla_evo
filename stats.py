@@ -31,10 +31,11 @@ def describe_statistics(population):
     # decoding dict for bitarray
     dcode = {'0': bitarray('0'), '1': bitarray('1')}
     # getting data for frequency stats, position by position
-    occurences_of_1s = [0.0 for _ in range(int(avg_length)+1)]
-    heterozygotes_of_1s = [0 for _ in range(int(avg_length)+1)]
-    homozygotes_of_1s = [0 for _ in range(int(avg_length)+1)]
-    homozygotes_of_0s = [0 for _ in range(int(avg_length)+1)]
+    avg_length_corrected = int(avg_length)+1
+    occurences_of_1s = [0.0 for _ in range(avg_length_corrected)]
+    heterozygotes_of_1s = [0 for _ in range(avg_length_corrected)]
+    homozygotes_of_1s = [0 for _ in range(avg_length_corrected)]
+    homozygotes_of_0s = [0 for _ in range(avg_length_corrected)]
     for p in population.individuals:
         # getting diploid frequency from all individuals
         for i, L in enumerate(zip(
@@ -53,8 +54,13 @@ def describe_statistics(population):
     # calculating actual frequency stats, in place
     frequencies = [o / no_of_genomes for o in occurences_of_1s]
     heterozygote_freq = [o / no_of_genomes for o in heterozygotes_of_1s]
+    # obsolete
     # homozygote1_freq = [o / no_of_genomes for o in homozygotes_of_1s]
     # homozygote0_freq = [o / no_of_genomes for o in homozygotes_of_0s]
+    # preparing average genome
+    average_genome = [0 for _ in range(avg_length_corrected)]
+    for i, what in enumerate(frequencies):
+        average_genome[i] = 1 if what > 0.5 else 0
     # calculating hardy-weinberg and fst
     expected_freq_hwe = []
     for _, f in enumerate(frequencies):
@@ -76,6 +82,7 @@ def describe_statistics(population):
         )
     # finish
     return {
+        'Avg_genome': ''.join([str(o) for o in average_genome]),
         'No_of_genomes': no_of_genomes,
         'Avg_length': float(round(avg_length, 2)),
         'Frequencies': [float(round(f, 2)) for f in frequencies],
