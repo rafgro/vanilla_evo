@@ -6,6 +6,7 @@ Main Purpose
 Simulate life of populations in the evoutionary context
 and connect internal genome classes to external fitness
 """
+import simulation.alfa01_single_motif as sim
 
 
 def assess_population(population):
@@ -19,4 +20,4 @@ def assess_population(population):
     # simple test fitness run
     # in future: move outside to a func/class
     for ind in population.individuals:
-        ind.fitness = 2.1
+        ind.fitness = sim.evaluate(ind.genome)
