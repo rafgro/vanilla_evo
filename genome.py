@@ -6,7 +6,6 @@ Main Purpose
 Govern technical details of genome implementation
 """
 
-from bitarray import bitarray
 from random import randint
 
 
@@ -16,24 +15,24 @@ class Genome:
 
     Attributes
     ----------
-    sequence_A : bitarray
-        First copy of genome sequence in bits
-    sequence_B : bitarray
-        Second copy of genome sequence in bits
+    sequence_A : list of ints
+        First copy of genome sequence in ints
+    sequence_B : list of ints
+        Second copy of genome sequence in ints
 
     Methods
     -------
     haploid()
         Return one of the sequences
     mutate(n=1)
-        Change single bits n times
+        Change single ints n times
     expand(n=1)
-        Expand sequence by n bits
+        Expand sequence by n ints
     """
 
     def __init__(self, seqA=None, seqB=None):
-        self.sequence_A = bitarray(seqA)
-        self.sequence_B = bitarray(seqB)
+        self.sequence_A = seqA.copy()
+        self.sequence_B = seqB.copy()
 
     def __str__(self):
         return '[' + self.sequence_A.to01() + ',' \
