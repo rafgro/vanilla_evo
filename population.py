@@ -101,9 +101,9 @@ class Population:
                 offspring_to_make -= 1
                 new_individuals.append(Individual(
                     genome=Genome(
-                        o_individual.genome.haploid(),
-                        self.individuals[o_individual.paired_with]
-                            .genome.haploid(),
+                        cod_seqA=o_individual.genome.haploid(),
+                        cod_seqB=self.individuals[o_individual.paired_with]
+                                     .genome.haploid(),
                     ),
                 ))
         # finish line

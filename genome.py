@@ -7,6 +7,7 @@ Govern technical details of genome implementation
 """
 
 from random import randint
+from codon import Codon, generate_genome_nonrandom, copy_genome
 
 
 class Genome:
@@ -15,10 +16,10 @@ class Genome:
 
     Attributes
     ----------
-    sequence_A : list of ints
-        First copy of genome sequence in ints
-    sequence_B : list of ints
-        Second copy of genome sequence in ints
+    sequence_A : list of codons
+        First copy of genome sequence
+    sequence_B : list of codons
+        Second copy of genome sequence
 
     Methods
     -------
@@ -30,13 +31,17 @@ class Genome:
         Expand sequence by n ints
     """
 
-    def __init__(self, seqA=None, seqB=None):
-        self.sequence_A = seqA.copy()
-        self.sequence_B = seqB.copy()
+    def __init__(self, seqA=None, seqB=None, cod_seqA=None, cod_seqB=None):
+        if cod_seqA is not None:
+            self.sequence_A = copy_genome(cod_seqA)
+            self.sequence_B = copy_genome(cod_seqB)
+        else:
+            self.sequence_A = generate_genome_nonrandom(seqA)
+            self.sequence_B = generate_genome_nonrandom(seqB)
 
     def __str__(self):
-        return '[' + self.sequence_A.to01() + ',' \
-            + self.sequence_B.to01() + ']'
+        return '[' + self.sequence_A + ',' \
+            + self.sequence_B + ']'
 
     def min_length(self):
         """Return shortest length of sequuence
@@ -51,18 +56,19 @@ class Genome:
         return self.sequence_B
 
     def mutate(self, n=1):
-        """Change n times randomly single bits in both sequences
+        """Change n times randomly single codons in both sequences
         Disclaimer: generally should not be used
         """
         for _ in range(n):
             locus = randint(0, len(self.sequence_A)-1)
-            self.sequence_A.invert(locus)
-            self.sequence_B.invert(locus)
+            self.sequence_A[locus].mutate()
+            self.sequence_B[locus].mutate()
 
     def expand(self, n=1):
         """Expand the sequence by n random bits
         """
         for _ in range(n):
-            new_part = randint(0, 1)
+            new_part = Codon()
+            new_part_copy = Codon(init=new_part.val)
             self.sequence_A.append(new_part)
-            self.sequence_B.append(new_part)
+            self.sequence_B.append(new_part_copy)

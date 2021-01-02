@@ -8,7 +8,6 @@ precise governance of the process, as well as saving objective
 results of experiments
 """
 
-from bitarray import bitarray
 from statistics import mean
 
 
@@ -24,7 +23,7 @@ def describe_statistics(population):
     ---------
     Expects class with list of individuals with genomes inside
     """
-    # basic stats
+    """# basic stats
     no_of_genomes = len(population.individuals)
     avg_length = mean([len(p.genome.sequence_A)+len(p.genome.sequence_B)
                        for p in population.individuals]) / 2  # 2*mean hence /2
@@ -88,4 +87,5 @@ def describe_statistics(population):
         'Frequencies': [float(round(f, 2)) for f in frequencies],
         'Heterozygotes': [float(round(f, 2)) for f in heterozygote_freq],
         'Fst': [float(round(f, 2)) for f in inbreeding_coeff],
-    }
+    }"""
+    return { 'test': 0 }

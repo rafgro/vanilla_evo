@@ -7,10 +7,11 @@ Introduce primary source of variability within genomes
 """
 
 from random import randint
+from codon import Codon
 
 
 def mutate(agenome, frequency_table):
-    """ Change sequence of bits in a random way
+    """ Change sequence of codons in a random way
 
     Parameters
     ----------
@@ -41,13 +42,13 @@ def mutate(agenome, frequency_table):
     for _ in range(no_of_substitutions):
         locus = randint(0, agenome.min_length())
         if randint(0, 1) == 0:  # diploid substitution
-            agenome.sequence_A.invert(locus)
-            agenome.sequence_B.invert(locus)
+            agenome.sequence_A[locus].mutate()
+            agenome.sequence_B[locus].mutate()
         else:  # haploid substituion
             if randint(0, 1) == 0:
-                agenome.sequence_A.invert(locus)
+                agenome.sequence_A[locus].mutate()
             else:
-                agenome.sequence_B.invert(locus)
+                agenome.sequence_B[locus].mutate()
     # single deletions
     for _ in range(no_of_deletions):
         locus = randint(0, agenome.min_length())
@@ -61,8 +62,8 @@ def mutate(agenome, frequency_table):
                 del agenome.sequence_B[locus]
     # expansions
     for _ in range(no_of_expansions):
-        expansion = randint(0, 1)
+        expansion = Codon()
+        expansion_copy = Codon(init=expansion.val)
         agenome.sequence_A.append(expansion)
-        agenome.sequence_B.append(expansion)
-        # for other end: agenome.sequence_A.insert(0, expansion)
+        agenome.sequence_B.append(expansion_copy)
     # finish
