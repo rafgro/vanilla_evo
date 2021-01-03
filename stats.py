@@ -9,6 +9,7 @@ results of experiments
 """
 
 from statistics import mean
+from codon import MAX_CODON
 
 
 def describe_statistics(population):
@@ -23,50 +24,46 @@ def describe_statistics(population):
     ---------
     Expects class with list of individuals with genomes inside
     """
-    """# basic stats
+    # basic stats
     no_of_genomes = len(population.individuals)
     avg_length = mean([len(p.genome.sequence_A)+len(p.genome.sequence_B)
                        for p in population.individuals]) / 2  # 2*mean hence /2
-    # decoding dict for bitarray
-    dcode = {'0': bitarray('0'), '1': bitarray('1')}
     # getting data for frequency stats, position by position
     avg_length_corrected = int(avg_length)+1
-    occurences_of_1s = [0.0 for _ in range(avg_length_corrected)]
-    heterozygotes_of_1s = [0 for _ in range(avg_length_corrected)]
-    homozygotes_of_1s = [0 for _ in range(avg_length_corrected)]
-    homozygotes_of_0s = [0 for _ in range(avg_length_corrected)]
+    occurences = [[0.0 for _ in range(0, MAX_CODON+1)]
+                  for _ in range(avg_length_corrected)]
+    heterozygotes = [0 for _ in range(avg_length_corrected)]
+    homozygotes = [0 for _ in range(avg_length_corrected)]
     for p in population.individuals:
         # getting diploid frequency from all individuals
         for i, L in enumerate(zip(
-                p.genome.sequence_A.iterdecode(dcode),
-                p.genome.sequence_B.iterdecode(dcode))):
-            if i >= len(occurences_of_1s):
+                p.genome.sequence_A,
+                p.genome.sequence_B)):
+            if i >= len(occurences):
                 continue
-            if L[0] == '1' and L[1] == '1':
-                homozygotes_of_1s[i] += 1
-                occurences_of_1s[i] += 1.0
-            elif L[0] == '0' and L[1] == '0':
-                homozygotes_of_0s[i] += 1
+            # note occurences
+            occurences[i][L[0].val] += 0.5
+            occurences[i][L[1].val] += 0.5
+            # note zygosity
+            if L[0] == L[1]:
+                homozygotes[i] += 1
             else:
-                heterozygotes_of_1s[i] += 1
-                occurences_of_1s[i] += 0.5
+                heterozygotes[i] += 1
     # calculating actual frequency stats, in place
-    frequencies = [o / no_of_genomes for o in occurences_of_1s]
-    heterozygote_freq = [o / no_of_genomes for o in heterozygotes_of_1s]
-    # obsolete
-    # homozygote1_freq = [o / no_of_genomes for o in homozygotes_of_1s]
-    # homozygote0_freq = [o / no_of_genomes for o in homozygotes_of_0s]
+    frequencies = [sum([v*i for i, v in enumerate(o)])
+                   / no_of_genomes for o in occurences]
+    heterozygote_freq = [o / no_of_genomes for o in heterozygotes]
     # preparing average genome
     average_genome = [0 for _ in range(avg_length_corrected)]
     for i, what in enumerate(frequencies):
-        average_genome[i] = 1 if what > 0.5 else 0
+        average_genome[i] = round(what)
     # calculating hardy-weinberg and fst
     expected_freq_hwe = []
     for _, f in enumerate(frequencies):
         # allele frequencies: p and q
         # then hwe is: p^2, 2pq, q^2
         p = f  # that's biological terminology
-        q = 1.0 - f
+        q = MAX_CODON - f  # or q = 1.0 - f
         expected_freq_hwe.append(
             {'homo1': p**2, 'hetero': 2*p*q, 'homo0': q**2}
         )
@@ -87,5 +84,4 @@ def describe_statistics(population):
         'Frequencies': [float(round(f, 2)) for f in frequencies],
         'Heterozygotes': [float(round(f, 2)) for f in heterozygote_freq],
         'Fst': [float(round(f, 2)) for f in inbreeding_coeff],
-    }"""
-    return { 'test': 0 }
+    }

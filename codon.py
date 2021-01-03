@@ -45,6 +45,12 @@ class Codon:
     def __repr__(self):
         return str(self.val)
 
+    def __eq__(self, other):
+        return self.val == other.val
+
+    def __hash__(self):
+        return hash(self.val)
+
 
 def generate_genome_random(n):
     """ Return list of random codons with length=n """
