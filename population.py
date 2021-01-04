@@ -24,7 +24,7 @@ class Individual:
         number of offspring carrying haploid genome from this individual
     """
     genome: Genome         # diploid genome sequences
-    fitness: float = 1.5   # directly-understood fitness
+    fitness: float = 1.0   # directly-understood fitness
     paired_with: int = -1  # index of mate individual
 
 
@@ -45,10 +45,11 @@ class Population:
         Swap current population with new individuals
     """
 
-    def __init__(self, found=False):
+    def __init__(self, found=False, n=50, genome_size=10, ambient_fitness=1.0):
         self.individuals = []
         if found is True:
-            self.found()
+            self.found(n=n, genome_size=genome_size,
+                       ambient_fitness=ambient_fitness)
 
     def __str__(self):
         return str(describe_statistics(self))
@@ -68,14 +69,23 @@ class Population:
         """ Swap current population with new individuals
         """
         # matching individuals
+        # sorted by fitness
+        self.individuals.sort(key=lambda x: x.fitness)
         for i, m_individual in enumerate(self.individuals):
             if m_individual.paired_with != -1:
                 continue  # skip already matched individuals
-            # for now: random matching
-            m_try = randint(0, len(self.individuals)-1)
-            if self.individuals[m_try].paired_with == -1:
-                m_individual.paired_with = m_try
-                self.individuals[m_try].paired_with = i
+            # for now: match next one
+            m_try = i + 1 if i < len(self.individuals) else i - randint(1, 3)
+            # safechecks
+            if m_try < 0 or m_try >= len(self.individuals):
+                continue
+            if m_try == i:
+                continue
+            if self.individuals[m_try].paired_with != -1:
+                continue
+            # assign mate
+            m_individual.paired_with = m_try
+            self.individuals[m_try].paired_with = i
         # mutations
         for i, _ in enumerate(self.individuals):
             mutate(self.individuals[i].genome,
