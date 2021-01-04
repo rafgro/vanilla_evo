@@ -6,7 +6,7 @@ Main Purpose
 Simulate life of populations in the evoutionary context
 and connect internal genome classes to external fitness
 """
-import simulation.alfa02_random as sim
+import simulation.alfa01_single_motif as sim
 
 
 def assess_population(population):

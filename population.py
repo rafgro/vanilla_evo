@@ -65,7 +65,7 @@ class Population:
                 fitness=ambient_fitness,
             ))
 
-    def next_generation(self):
+    def next_generation(self, mutation_setup):
         """ Swap current population with new individuals
         """
         # matching individuals
@@ -88,8 +88,7 @@ class Population:
             self.individuals[m_try].paired_with = i
         # mutations
         for i, _ in enumerate(self.individuals):
-            mutate(self.individuals[i].genome,
-                   {'singles': 20.0, 'expansions': 5.0, 'deletions': 2.5})
+            mutate(self.individuals[i].genome, mutation_setup)
         # crossing overs
         for i, _ in enumerate(self.individuals):
             if self.individuals[i].paired_with == -1:

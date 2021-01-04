@@ -83,5 +83,5 @@ def describe_statistics(population):
         'Avg_length': float(round(avg_length, 2)),
         'Frequencies': [float(round(f, 2)) for f in frequencies],
         'Heterozygotes': [float(round(f, 2)) for f in heterozygote_freq],
-        'Fst': [float(round(f, 2)) for f in inbreeding_coeff],
+        # 'Fst': [float(round(f, 2)) for f in inbreeding_coeff],
     }

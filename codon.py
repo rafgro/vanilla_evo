@@ -46,7 +46,7 @@ class Codon:
         return str(self.val)
 
     def __eq__(self, other):
-        return self.val == other.val
+        return self.val == other
 
     def __hash__(self):
         return hash(self.val)
