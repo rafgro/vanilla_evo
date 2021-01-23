@@ -57,6 +57,7 @@ def describe_statistics(population):
     average_genome = [0 for _ in range(avg_length_corrected)]
     for i, what in enumerate(frequencies):
         average_genome[i] = round(what)
+    # TODO: correct H-W calculation
     # calculating hardy-weinberg and fst
     expected_freq_hwe = []
     for _, f in enumerate(frequencies):
