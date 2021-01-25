@@ -14,3 +14,8 @@ def test_codon_generators():
     assert len(genomeA) == 5
     genomeB = generate_genome_nonrandom([0, 1, 0, 1])
     assert str(genomeB) == "[0 1 0 1]"
+
+
+def test_new_codon():
+    # TODO
+    pass

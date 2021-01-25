@@ -6,8 +6,9 @@ Main Purpose
 Introduce primary source of variability within genomes
 """
 
+import numpy as np
 from random import randint
-from codon import Codon
+from codon import new_codon
 
 
 def mutate(agenome, frequency_table):
@@ -38,32 +39,35 @@ def mutate(agenome, frequency_table):
             no_of_expansions += 1
         if dice_roll < frequency_table['deletions']:
             no_of_deletions += 1
+
     # single substitutions
     for _ in range(no_of_substitutions):
         locus = randint(0, agenome.min_length())
         if randint(0, 1) == 0:  # diploid substitution
-            agenome.sequence_A[locus].mutate()
-            agenome.sequence_B[locus].mutate()
+            agenome.sequence_A[locus] = new_codon()
+            agenome.sequence_B[locus] = new_codon()
         else:  # haploid substituion
             if randint(0, 1) == 0:
-                agenome.sequence_A[locus].mutate()
+                agenome.sequence_A[locus] = new_codon()
             else:
-                agenome.sequence_B[locus].mutate()
+                agenome.sequence_B[locus] = new_codon()
+
     # single deletions
+    mask_A = np.ones(len(agenome.sequence_A), dtype=bool)
+    mask_B = np.ones(len(agenome.sequence_B), dtype=bool)
     for _ in range(no_of_deletions):
         locus = randint(0, agenome.min_length())
         if randint(0, 1) == 0:  # diploid deletion
-            del agenome.sequence_A[locus]
-            del agenome.sequence_B[locus]
+            mask_A[locus] = False
+            mask_B[locus] = False
         else:  # haploid deletion
             if randint(0, 1) == 0:
-                del agenome.sequence_A[locus]
+                mask_A[locus] = False
             else:
-                del agenome.sequence_B[locus]
+                mask_B[locus] = False
+    agenome.sequence_A = agenome.sequence_A[mask_A]
+    agenome.sequence_B = agenome.sequence_B[mask_B]
+
     # expansions
-    for _ in range(no_of_expansions):
-        expansion = Codon()
-        expansion_copy = Codon(init=expansion.val)
-        agenome.sequence_A.append(expansion)
-        agenome.sequence_B.append(expansion_copy)
+    agenome.expand(n=no_of_expansions)
     # finish

@@ -7,7 +7,7 @@ Govern technical details of genome implementation
 """
 
 from random import randint
-from codon import Codon, generate_genome_nonrandom, copy_genome
+from codon import new_codon, generate_genome_nonrandom, copy_genome
 
 
 class Genome:
@@ -16,9 +16,9 @@ class Genome:
 
     Attributes
     ----------
-    sequence_A : list of codons
+    sequence_A : numpy array of int16
         First copy of genome sequence
-    sequence_B : list of codons
+    sequence_B : numpy array of int16
         Second copy of genome sequence
 
     Methods
@@ -55,20 +55,14 @@ class Genome:
             return self.sequence_A
         return self.sequence_B
 
-    def mutate(self, n=1):
-        """Change n times randomly single codons in both sequences
-        Disclaimer: generally should not be used
-        """
-        for _ in range(n):
-            locus = randint(0, len(self.sequence_A)-1)
-            self.sequence_A[locus].mutate()
-            self.sequence_B[locus].mutate()
-
     def expand(self, n=1):
         """Expand the sequence by n random bits
         """
-        for _ in range(n):
-            new_part = Codon()
-            new_part_copy = Codon(init=new_part.val)
-            self.sequence_A.append(new_part)
-            self.sequence_B.append(new_part_copy)
+        new_part = [new_codon() for _ in range(n)]
+
+        self.sequence_A = generate_genome_nonrandom(
+            self.sequence_A.tolist() + new_part
+        )
+        self.sequence_B = generate_genome_nonrandom(
+            self.sequence_B.tolist() + new_part
+        )

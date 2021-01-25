@@ -1,18 +1,13 @@
-'''import genome
-from codon import copy_genome
+import genome
 
 
-def test_genome_expansion_and_mutation():
+def test_genome_expansion():
     an_instance = genome.Genome()
     an_instance.expand(n=10)  # expansion test
-    a_sequence = copy_genome(an_instance.sequence_A)
-    an_instance.mutate(4)  # mutation test
-    set_A = set(an_instance.sequence_A)
-    set_B = set(a_sequence)
-    assert len(set_A.intersection(set_B)) < len(a_sequence)  # overlap
+    assert len(an_instance.sequence_A) >= 10
 
 
 def test_genome_haploidy():
     an_instance = genome.Genome(seqA=[1, 1, 1], seqB=[0, 0, 0])
     a_haploid = an_instance.haploid()
-    assert a_haploid[0].val == 1 or a_haploid[0].val == 0'''
+    assert a_haploid[0] == 1 or a_haploid[0] == 0
