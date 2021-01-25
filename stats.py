@@ -42,8 +42,8 @@ def describe_statistics(population):
             if i >= len(occurences):
                 continue
             # note occurences
-            occurences[i][L[0].val] += 0.5
-            occurences[i][L[1].val] += 0.5
+            occurences[i][L[0]] += 0.5
+            occurences[i][L[1]] += 0.5
             # note zygosity
             if L[0] == L[1]:
                 homozygotes[i] += 1
