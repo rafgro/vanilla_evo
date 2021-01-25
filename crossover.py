@@ -6,10 +6,12 @@ Main Purpose
 Increase variability of genomes via crossing-over events
 """
 
+import numba
 import numpy as np
 from random import randint
 
 
+@numba.jit(nopython=True)
 def crossover(agenome, events=1):
     """ Recombine two haploid parts of a genome
 

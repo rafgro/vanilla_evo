@@ -3,7 +3,7 @@ import genome
 
 def test_genome_expansion():
     an_instance = genome.Genome()
-    an_instance.expand(n=10)  # expansion test
+    an_instance.expand(10)  # expansion test
     assert len(an_instance.sequence_A) >= 10
 
 

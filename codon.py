@@ -22,20 +22,22 @@ def generate_genome_random(n):
     return np.random.randint(low=MIN_CODON, high=MAX_CODON, size=n)
 
 
-# @numba.jit(nopython=True)  # numba postponed re: reflected lists
+@numba.jit(nopython=True)
 def generate_genome_nonrandom(thelist):
     """ Return list of codons following provided list """
     if thelist is None:
-        return np.array([], dtype=np.int16)
+        return np.array([MIN_CODON], dtype=np.int16)
     else:
         return np.array(thelist, dtype=np.int16)
 
 
+@numba.jit(nopython=True)
 def new_codon():
     """ Return int inside min-max constants """
     return randint(MIN_CODON, MAX_CODON)
 
 
+@numba.jit(nopython=True)
 def copy_genome(thelist):
     """ Return new list based on a list of codons """
-    return np.array(thelist, dtype=np.int16, copy=True)
+    return np.copy(thelist)

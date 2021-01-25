@@ -6,11 +6,25 @@ Main Purpose
 Introduce primary source of variability within genomes
 """
 
+import numba
 import numpy as np
 from random import randint
 from codon import new_codon
+from numba.core import types
+from numba.typed import Dict
 
 
+def pydict_to_numbadict(adict):
+    d = Dict.empty(
+        key_type=types.unicode_type,
+        value_type=types.float64,
+    )
+    for k, v in adict.items():
+        d[k] = v
+    return d
+
+
+@numba.jit(nopython=True)
 def mutate(agenome, frequency_table):
     """ Change sequence of codons in a random way
 
@@ -53,8 +67,8 @@ def mutate(agenome, frequency_table):
                 agenome.sequence_B[locus] = new_codon()
 
     # single deletions
-    mask_A = np.ones(len(agenome.sequence_A), dtype=bool)
-    mask_B = np.ones(len(agenome.sequence_B), dtype=bool)
+    mask_A = np.ones((len(agenome.sequence_A),), dtype=np.bool_)
+    mask_B = np.ones((len(agenome.sequence_B),), dtype=np.bool_)
     for _ in range(no_of_deletions):
         locus = randint(0, agenome.min_length())
         if randint(0, 1) == 0:  # diploid deletion
@@ -69,5 +83,5 @@ def mutate(agenome, frequency_table):
     agenome.sequence_B = agenome.sequence_B[mask_B]
 
     # expansions
-    agenome.expand(n=no_of_expansions)
+    agenome.expand(no_of_expansions)
     # finish

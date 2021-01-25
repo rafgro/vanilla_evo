@@ -10,7 +10,7 @@ on population level - from founding up to turnover
 from dataclasses import dataclass
 from random import randint
 from genome import Genome
-from mutate import mutate
+from mutate import mutate, pydict_to_numbadict
 from crossover import crossover
 from stats import describe_statistics
 
@@ -88,7 +88,7 @@ class Population:
             self.individuals[m_try].paired_with = i
         # mutations
         for i, _ in enumerate(self.individuals):
-            mutate(self.individuals[i].genome, mutation_setup)
+            mutate(self.individuals[i].genome, pydict_to_numbadict(mutation_setup))
         # crossing overs
         for i, _ in enumerate(self.individuals):
             if self.individuals[i].paired_with == -1:

@@ -6,10 +6,21 @@ Main Purpose
 Govern technical details of genome implementation
 """
 
+import numpy as np
+from numba.experimental import jitclass
+from numba import int16
 from random import randint
 from codon import new_codon, generate_genome_nonrandom, copy_genome
 
 
+# numba specification for the class
+spec = [
+    ('sequence_A', int16[:]),
+    ('sequence_B', int16[:]),
+]
+
+
+@jitclass(spec)
 class Genome:
     """
     Class containing a single diploid (!) genome and operations on it
@@ -25,9 +36,7 @@ class Genome:
     -------
     haploid()
         Return one of the sequences
-    mutate(n=1)
-        Change single ints n times
-    expand(n=1)
+    expand(n)
         Expand sequence by n ints
     """
 
@@ -55,14 +64,9 @@ class Genome:
             return self.sequence_A
         return self.sequence_B
 
-    def expand(self, n=1):
+    def expand(self, n):
         """Expand the sequence by n random bits
         """
-        new_part = [new_codon() for _ in range(n)]
-
-        self.sequence_A = generate_genome_nonrandom(
-            self.sequence_A.tolist() + new_part
-        )
-        self.sequence_B = generate_genome_nonrandom(
-            self.sequence_B.tolist() + new_part
-        )
+        new_part = np.array([new_codon() for _ in range(n)], dtype=np.int16)
+        self.sequence_A = np.concatenate((self.sequence_A, new_part), axis=0)
+        self.sequence_B = np.concatenate((self.sequence_B, new_part), axis=0)
