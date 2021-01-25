@@ -21,7 +21,7 @@ def generate_genome_random(n):
     return np.random.randint(low=MIN_CODON, high=MAX_CODON, size=n)
 
 
-@numba.jit(nopython=True)
+# @numba.jit(nopython=True)  # numba postponed re: reflected lists
 def generate_genome_nonrandom(thelist):
     """ Return list of codons following provided list """
     return np.array(thelist, dtype=np.int16)
